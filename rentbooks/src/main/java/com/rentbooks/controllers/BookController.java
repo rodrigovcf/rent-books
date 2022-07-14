@@ -12,88 +12,90 @@ import com.rentbooks.services.BookService;
 import com.rentbooks.services.RenterService;
 
 @Controller
+//@SessionAttributes("books")
 public class BookController {
-
-	private static final String VIEW_ALL_BOOK = "/admin/viewallbook";
-	private static final String PARAM_BOOK = "books";
-	private static final String  PARAM_REDIRECT = "redirect:";
 
 	@Autowired
 	private BookService service;
 
 	@Autowired
-	private RenterService renterService; 
+	private RenterService renterService;
 
-	@RequestMapping(value = "/admin/viewallbook", method = RequestMethod.GET)
-	public String showViewAllBook(ModelMap model) {
-		model.addAttribute(PARAM_BOOK,service.retrieveBooks());
-		return VIEW_ALL_BOOK;
+	@RequestMapping(value = "/viewallbook", method = RequestMethod.GET)
+	public String showViewAllBook(ModelMap model, Book book) {
+		model.addAttribute("books",service.retrieveBooks());
+		return "viewallbook";
 	}
 
-	@RequestMapping(value = "/admin/addbook", method = RequestMethod.GET)
+	@RequestMapping(value = "/addbook", method = RequestMethod.GET)
 	public String showAddBook(ModelMap model) {
 		model.addAttribute("book", new Book());
-		return "admin/addbook";
+		return "addbook";
 	}
 
-	@RequestMapping(value = "/admin/addbook", method = RequestMethod.POST)
+	@RequestMapping(value = "/addbook", method = RequestMethod.POST)
 	public String addBook(ModelMap model, Book book) {
-		if(book.getName().isEmpty() || book.getPrice()==0) {
-			model.put("errorMessage", "Invalid format - fields cannot be empty");
-			return "admin/addbook";
-		}else {
-			BookService.addBook(book.getName(), book.getPrice(), 'Y');
-			model.clear();
-			return PARAM_REDIRECT + VIEW_ALL_BOOK;
-		}
+		service.addBook(book.getName(), book.getPrice(), book.getAvailable());
+		model.clear();
+		return "redirect:viewallbook";
 	}
 
 
-	@RequestMapping(value = "/admin/delete", method = RequestMethod.GET)
+	@RequestMapping(value = "/delete-book", method = RequestMethod.GET)
 	public String deleteBook(ModelMap model, @RequestParam int id) {
 		service.deleteBook(id);
 		model.clear();
-		return PARAM_REDIRECT + VIEW_ALL_BOOK;
+		return "redirect:viewallbook";
 	}
 
-	@RequestMapping(value = "/admin/update", method = RequestMethod.GET)
+	@RequestMapping(value = "/update-book", method = RequestMethod.GET)
 	public String showUpdateBook(ModelMap model, @RequestParam int id) {
 		model.addAttribute("book", service.retrieveBook(id));
-		return "admin/update";
+		return "update";
 	}
 
-	@RequestMapping(value = "/admin/update", method = RequestMethod.POST)
+	@RequestMapping(value = "/update-book", method = RequestMethod.POST)
 	public String updateBook(ModelMap model, Book book) {
 		service.updateBook(book);
 		model.clear();
-		return PARAM_REDIRECT + VIEW_ALL_BOOK;
+		return "redirect:viewallbook";
 	}
 
-	@RequestMapping(value = "/Renter/status", method = RequestMethod.GET)
+
+	//Renter Logic
+
+	//Lista livros disponíveis - Y
+	@RequestMapping(value = "/status", method = RequestMethod.GET)
 	public String renterBook(ModelMap model) {
-		model.addAttribute(PARAM_BOOK, service.retrieveStatusBooks());
+		renterService.renterListBook(service.retrieveStatusBooks());
+		model.addAttribute("books", renterService.getUserTemp().getBooks());
+		
+		//model.addAttribute("books", service.retrieveStatusBooks());
 		model.addAttribute("renter", renterService.retrieverUser());
-		return "/Renter/status";
+		return "status";
 	}
+	
+//	@RequestMapping(value = "/status", method = RequestMethod.GET)
+//	public String renterBook(ModelMap model) {
+//		model.addAttribute("books", service.retrieveStatusBooks());
+//		model.addAttribute("renter", renterService.retrieverUser());
+//		return "status";
+//	}
 
-	@RequestMapping(value = "/Renter/renter-book", method = RequestMethod.GET)
+	//Requisita o aluquel de um livro passando o id
+	@RequestMapping(value = "/renter-book", method = RequestMethod.GET)
 	public String showStatusBook(ModelMap model, @RequestParam int id) {
-		model.addAttribute(PARAM_BOOK, service.requestBook(id));
+		model.addAttribute("books", service.requestBook(id));
 		model.addAttribute("renter", renterService.retrieverUser());
-		return "/Renter/status";
+		return "status";
 	}
 
-	@RequestMapping(value = "/Renter/renter-delete", method = RequestMethod.GET)
+	//Deleta a requisição
+	@RequestMapping(value = "/renter-delete", method = RequestMethod.GET)
 	public String deleteRent(ModelMap model, @RequestParam int id) {
 		service.deleteRent(id);
 		model.clear();
-		return PARAM_REDIRECT + "/Renter/viewallbook";
-	}
-
-	@RequestMapping(value = "/Renter/viewallbook", method = RequestMethod.GET)
-	public String showViewAllBookRenter(ModelMap model) {
-		model.addAttribute(PARAM_BOOK,service.retrieveBooks());
-		return "/Renter/viewallbook";
+		return "redirect:viewallbook";
 	}
 
 }

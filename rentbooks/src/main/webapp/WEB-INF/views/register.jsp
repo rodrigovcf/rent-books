@@ -1,54 +1,71 @@
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<!DOCTYPE html>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %> 
 <html>
 <head>
-
 <title>Register</title>
-<link href="resources/css/bootstrap.min.css" rel="stylesheet">
+<link href="webjars/bootstrap/4.0.0/css/bootstrap.min.css"
+	    		rel="stylesheet">
 </head>
 <body>
-
-	<div id="error" class="alert alert-error" align="center">
-			<font color="red">${errorMessage}</font>
-	</div>
+	
 	<div class="container w-25">
 		<h1 align="center">Register</h1>
-
-		<form:form id="form" modelAttribute="renter" action="register"
-			method="POST">
+		<div id="error">
+			<p>
+				<font color="red">${errorMessage}</font>
+			</p>
+		</div>
+		
+		<form:form id="form" action="register" method="POST" 
+			commandName="renter">
+			
 			<div class="form-group">
 				<form:label path="name">User Name</form:label>
-				<form:input path="name" maxlength="30" id="name" name="name"
-					placeholder="Enter Username" type="text" 
-					class="form-control" />
+				<form:input path="name" id="name" 
+					placeholder="Enter Username" 
+					name="name" required="required" type="text" 
+					maxlength="30" class="form-control"/> 
 			</div>
 			<div class="form-group">
 				<form:label path="password">Password</form:label>
-				<form:input path="password" maxlength="30" id="password" 
-					name="password" placeholder="Enter Password" 
-					type="password" class="form-control" />
+				<form:input path="password" id="password" 
+					placeholder="Enter Password" 
+					name="password" required="required" 
+					type="password"  maxlength="30" class="form-control"/>
 			</div>
 			
 			<div class="form-group">
-				<form:label path="cpassword">Confirm Password</form:label>
-				<form:input path="cpassword" maxlength="30"
-					id="cpassword" name="cpassword" 
-					placeholder="Confirm your Password" type="password" 
-					class="form-control" />
+				<label>Confirm Password</label>
+				<input id="cpassword" 
+					placeholder="Confirm your Password" 
+					name="cpassword" required="required" 
+					type="password"  maxlength="30" class="form-control"/>
 			</div>
 			
-			<button id="register" type="submit"
-				class="btn-primary btn-lg btn-block active">Register</button>
-
-
+			<button id="register" type="submit" class="btn btn-primary">
+				Register
+			</button>
 		</form:form>
-
-		<script src="/resources/js/utilities.js"></script>
-		<script src="/resources/js/bootstrap.min.js"></script>
-
-	</div>
-
-	<script src="/resources/js/bootstrap.min.js"></script>
+		
+		 <script> 
+			 var password = document.getElementById("password")
+			  , confirm_password = document.getElementById("cpassword");
 	
+			function validatePassword(){
+			  if(password.value != confirm_password.value) {
+			    confirm_password.setCustomValidity(
+			    "Invalid format - password do not match with confirm password");
+			  } else {
+			    confirm_password.setCustomValidity('');
+			  }
+			}
+	
+			password.onchange = validatePassword;
+			confirm_password.onkeyup = validatePassword;
+		</script> 
+		
+	</div>
+	
+	<script src="webjars/jquery/1.9.1/jquery.min.js"></script>
+	<script src="webjars/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 </body>
 </html>

@@ -17,7 +17,6 @@ public class Book implements Serializable{
 		this.available = available;
 	}
 
-	private int id_renter;
 	private int id;
 	private String name;
 	private int price;
@@ -48,14 +47,6 @@ public class Book implements Serializable{
 		this.id = id;
 	}
 
-	public int getId_renter() {
-		return id_renter;
-	}
-
-	public void setId_renter(int id_renter) {
-		this.id_renter = id_renter;
-	}
-
 	@Override
 	public String toString() {
 		return String
@@ -64,7 +55,7 @@ public class Book implements Serializable{
 	}
 	@Override
 	public int hashCode() {
-		return Objects.hash(available, id, name, price);
+		return Objects.hash(id);
 	}
 	@Override
 	public boolean equals(Object obj) {
@@ -75,8 +66,7 @@ public class Book implements Serializable{
 		if (getClass() != obj.getClass())
 			return false;
 		Book other = (Book) obj;
-		return available == other.available && id == other.id && Objects.equals(name, other.name)
-				&& price == other.price;
+		return id == other.id;
 	}
 	
 }

@@ -1,15 +1,21 @@
 package com.rentbooks.model;
 
 import java.io.Serializable;
-import java.util.Objects;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
-public class Renter implements Serializable{
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+public class Renter implements Serializable, UserDetails{
 	
 	private static final long serialVersionUID = 1L;
 	private int id;
 	private String name;
 	private String password;
-	private String cpassword;
+	private List<Role> roles = new ArrayList<Role>();
+	private List<Book> statusBooks = new ArrayList<Book>();
 	
 	public Renter() {}
 	
@@ -36,34 +42,52 @@ public class Renter implements Serializable{
 		this.password = password;
 	}
 	
-	public String getPassword() {
-		return password;
+
+	public List<Book> getBooks() {
+		return statusBooks;
+	}
+
+	public void setBooks(List<Book> books) {
+		this.statusBooks = books;
+	}
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		Role userRole = new Role();
+		userRole.setNomeRole("ROLE_USER");
+		roles.add(userRole);
+		
+		return (Collection<?extends GrantedAuthority>) this.roles;
 	}
 	
-	public String getCpassword() {
-		return cpassword;
-	}
-
-	public void setCpassword(String cpassword) {
-		this.cpassword = cpassword;
+	@Override
+	public String getPassword() {
+		return this.password;
 	}
 
 	@Override
-	public int hashCode() {
-		return Objects.hash(cpassword, id, name, password);
+	public String getUsername() {
+		return this.name;
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Renter other = (Renter) obj;
-		return Objects.equals(cpassword, other.cpassword) && id == other.id && Objects.equals(name, other.name)
-				&& Objects.equals(password, other.password);
+	public boolean isAccountNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		return true;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		return true;
 	}
 
 }

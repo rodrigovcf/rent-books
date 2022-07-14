@@ -1,11 +1,9 @@
 <web-app xmlns="http://Java.sun.com/xml/ns/j2ee"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
-	http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
 	version="3.0">
 
 	<display-name>Rent Books</display-name>
-	
 
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener
@@ -16,19 +14,7 @@
 		<param-name>contextConfigLocation</param-name>
 		<param-value>/WEB-INF/spring/books-servlet.xml</param-value>
 	</context-param>
-	
-	<context-param>
-		<param-name>spring.profiles.active</param-name>
-		<param-value>dev</param-value>
-	</context-param>
-	<context-param>
-		<param-name>spring.profiles.default</param-name>
-		<param-value>dev</param-value>
-	</context-param>
-	<context-param>
-		<param-name>spring.liveBeansView.mbeanDomain</param-name>
-		<param-value>dev</param-value>
-	</context-param>
+
 
 	<servlet>
 		<servlet-name>dispatcher</servlet-name>
@@ -45,5 +31,16 @@
 		<servlet-name>dispatcher</servlet-name>
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
+
+	<filter>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<filter-class>org.springframework.web.filter.DelegatingFilterProxy
+		</filter-class>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
 
 </web-app>

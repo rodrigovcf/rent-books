@@ -6,37 +6,41 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.rentbooks.model.Book;
 import com.rentbooks.model.Renter;
+import com.rentbooks.security.AuthenticatedUser;
 
 @Service
 public class RenterService {
-
-	private static List<Renter> renters = new ArrayList<>();
-	private static int renterCount = 9999;
-
-	private static Renter userRent;
-
+	
+	private static List<Renter> renters = new ArrayList<Renter>();
+	private static int renterCount = 10000;
+	private static AuthenticatedUser user = new AuthenticatedUser();
+	
+	private static Renter userRent = new Renter();
+	
+	private Renter userTemp; 
+	
 	public static Renter getUserRent() {
 		return userRent;
 	}
 
-	public static int getRenterCount() {
-		++renterCount;
-		return renterCount;
+	static {
+		renters.add(new Renter(++renterCount, "rodrigo", "123"));
 	}
-
+	
 	public List<Renter> retrieveRenters(){
-		List<Renter> filteredRenters = new ArrayList<>();
+		List<Renter> filteredRenters = new ArrayList<Renter>();
 		for (Renter renter: renters) {
 			filteredRenters.add(renter);
 		}
 		return filteredRenters;
 	}
-
+	
 	public void addRenter(String name, String password) {
-		renters.add(new Renter(getRenterCount(),name, password));
+		renters.add(new Renter(++renterCount,name, password));
 	}
-
+	
 	public void deleteRenter(int id) {
 		Iterator<Renter> iterator = renters.iterator();
 		while(iterator.hasNext()) {
@@ -46,15 +50,17 @@ public class RenterService {
 		}
 	}
 
-	public boolean existName(String userName) {
+	
+	public Renter retrieveRenter(String userName) {
 		for (Renter renter: renters) {
 			if(renter.getName().equals(userName)) {
-				return true;
+				userRent = renter;
+				return renter;
 			}
 		}
-		return false;
+		return null;
 	}
-
+	
 	public void updateRenter(Renter renter) {
 		for(Renter eachRenter:renters) {
 			if(eachRenter.getId() == renter.getId()) {
@@ -63,25 +69,32 @@ public class RenterService {
 			}
 		}
 	}
-
-	public static List<Renter> getRenters() {
-		return renters;
-	}
-
-	public Renter retrieverUser() {
-		return getUserRent();
-	}
-
-
-	public static boolean retrieveRenter(String userName, String pass) {
+	
+	public Renter user(String name, String password) {
 		for (Renter renter: renters) {
-			if((renter.getName().equals(userName)) && 
-					(renter.getPassword().equals(pass))) {
+			if(renter.getName() == name) {
 				userRent = renter;
-				return true;
+				return userRent;
 			}
 		}
-		return false;
+		return null;
+	}
+	
+	public Renter retrieverUser() {
+		return retrieveRenter(user.retriveLoggedinUserName());
+	}
+
+	//Lista do User logado
+	public Renter renterListBook(List<Book> books) {
+		userTemp = new Renter();
+		userTemp = userRent;
+		userTemp.setBooks(books);
+		
+		return userTemp;
+	}
+
+	public Renter getUserTemp() {
+		return userTemp;
 	}
 
 }

@@ -5,44 +5,54 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
-
 import com.rentbooks.model.Book;
-import com.rentbooks.model.RentedBooks;
 
 @Service
 public class BookService {
 
-	private static List<Book> books = new ArrayList<>();
-
-	private static List<Book> statusBookList = new ArrayList<>();
-
-	private static RentedBooks requestBooks = new RentedBooks();
-
-	private static List<RentedBooks> rentedBooks = new ArrayList<>();
-
-	private static int bookCount = 999;
+	private static List<Book> books = new ArrayList<Book>();
+	
+	//Livros disponíveis Y
+	private static List<Book> availableBooks = new ArrayList<Book>();
+	
+	
+	private static List<Book> statusBookList = new ArrayList<Book>();
+	private static int bookCount = 1000;
+	
+	static {
+		books.add(new Book(++bookCount, "Wings of Fire", 150, 'N'));
+		books.add(new Book(++bookCount, "Life of Monk", 50, 'N'));
+		books.add(new Book(++bookCount, "Programming", 250, 'Y'));
+		books.add(new Book(++bookCount, "Design Pattern", 30, 'Y'));
+		books.add(new Book(++bookCount, "Programming", 250, 'Y'));
+		books.add(new Book(++bookCount, "Design Pattern", 30, 'Y'));
+		books.add(new Book(++bookCount, "Programming", 250, 'Y'));
+		books.add(new Book(++bookCount, "Design Pattern", 30, 'Y'));
+	}
 
 	public List<Book> addAvailableBooks() {
-		List<Book> availableBooks = new ArrayList<>();
+		availableBooks = new ArrayList<Book>();
 		for(Book book: books) {
-			if(book.getAvailable() == 'Y' || book.getAvailable() == 'y')
+			if(book.getAvailable() == 'Y')
 				availableBooks.add(book);
 		}
 		return availableBooks;
 	}
 
-	public static void addBook(String name, int price, char available) {
-		books.add(new Book(++bookCount, name, price, available));
+	public void addBook(String name, int price, char available) {
+		books.add(new Book(++bookCount, name, price, 'Y'));
 	}
 
 	public List<Book> retrieveBooks(){
-		List<Book> filteredBooks = new ArrayList<>();
+		List<Book> filteredBooks = new ArrayList<Book>();
 		for (Book book: books) {
 			filteredBooks.add(book);
 		}
 		return filteredBooks;
 	}
 
+	
+	//Busca um livro da lista geral de livros, com base em um id
 	public Book retrieveBook(int id) {
 		for (Book book: books) {
 			if(book.getId() == id)
@@ -51,28 +61,16 @@ public class BookService {
 		return null;
 	}
 
+	
+	//Requisita um livro disponivel Y e atualiza a lista geral para N
+	//Com base no id do livro
 	public List<Book> requestBook(int id) {
 		statusBookList.add(retrieveBook(id));
-
-		requestBooks.setRentID(id);
-		requestBooks.setRentedBooks(statusBookList);
-
-		rentedBooks.add(requestBooks);
-
+//		books.remove(retrieveBook(id));
 		retrieveBook(id).setAvailable('N');
-		
-		List<Book> requests = null;
-		
-		for(RentedBooks rented: rentedBooks) {
-
-			if(rented.getRentID() == requestBooks.getRentID())
-				requests = requestBooks.getRentedBooks();
-		}
-
-		return requests;
+		return statusBookList;
 	}
-
-
+	
 	public List<Book> retrieveStatusBooks() {
 		return statusBookList;
 	}
@@ -96,7 +94,7 @@ public class BookService {
 				iterator.remove();
 		}
 	}
-
+	
 	public void deleteRent(int id) {
 		Iterator<Book> iterator = statusBookList.iterator();
 		while(iterator.hasNext()) {
@@ -106,5 +104,5 @@ public class BookService {
 		}
 		retrieveBook(id).setAvailable('Y');
 	}
-
+	
 }
