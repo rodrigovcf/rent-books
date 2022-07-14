@@ -11,10 +11,10 @@ public class LoginController {
 	public String login() {
 		return "login";
 	}
-	
-	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public String loginRequest() {
-		return "home";
-	}
+//	
+//	@RequestMapping(value = "/login", method = RequestMethod.POST)
+//	public String loginRequest() {
+//		return "home";
+//	}
 
 }

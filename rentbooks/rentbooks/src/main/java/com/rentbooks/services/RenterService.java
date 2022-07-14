@@ -14,7 +14,7 @@ public class RenterService {
 
 	private static List<Renter> renters = new ArrayList<>();
 	private static int renterCount = 10000;
-	private static AuthenticatedUser user = new AuthenticatedUser();
+	public static AuthenticatedUser user = new AuthenticatedUser();
 
 	private Renter userRent = new Renter();
 

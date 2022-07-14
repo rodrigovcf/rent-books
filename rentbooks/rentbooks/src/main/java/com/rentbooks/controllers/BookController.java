@@ -14,7 +14,7 @@ import com.rentbooks.services.RenterService;
 @Controller
 public class BookController {
 
-	private static final String VIEW_ALL_BOOK = "viewallbook";
+	private static final String VIEW_ALL_BOOK = "/admin/viewallbook";
 	private static final String PARAM_BOOK = "books";
 	private static final String  PARAM_REDIRECT = "redirect:";
 	
@@ -33,7 +33,7 @@ public class BookController {
 	@RequestMapping(value = "/admin/addbook", method = RequestMethod.GET)
 	public String showAddBook(ModelMap model) {
 		model.addAttribute("book", new Book());
-		return "addbook";
+		return "admin/addbook";
 	}
 
 	@RequestMapping(value = "/admin/addbook", method = RequestMethod.POST)
