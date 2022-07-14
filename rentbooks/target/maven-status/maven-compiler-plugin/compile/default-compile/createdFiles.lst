@@ -1,0 +1,10 @@
+com\rentbooks\services\RenterService.class
+com\rentbooks\controllers\RenterController.class
+com\rentbooks\controllers\BookController.class
+com\rentbooks\model\RentedBooks.class
+com\rentbooks\controllers\LogoutController.class
+com\rentbooks\controllers\HomeController.class
+com\rentbooks\services\BookService.class
+com\rentbooks\controllers\LoginController.class
+com\rentbooks\model\Book.class
+com\rentbooks\model\Renter.class
