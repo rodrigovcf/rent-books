@@ -4,15 +4,14 @@
 <head>
 
 <title>Register</title>
-<link href="webjars/bootstrap/4.0.0/css/bootstrap.min.css"
-	rel="stylesheet">
+<link href="resources/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
 
-
+	<div id="error" class="alert alert-error" align="center"></div>
 	<div class="container w-25">
 		<h1 align="center">Register</h1>
-		<div id="error" align="center"></div>
+
 
 		<form:form id="form" action="register" method="POST"
 			commandName="renter">
@@ -20,22 +19,25 @@
 			<div class="form-group">
 				<form:label path="name">User Name</form:label>
 				<form:input path="name" id="name" placeholder="Enter Username"
-					name="name" required="required" type="text" maxlength="30"
+					name="name" required="true" type="text" maxlength="30"
 					class="form-control" />
 			</div>
 			<div class="form-group">
 				<form:label path="password">Password</form:label>
 				<form:input path="password" id="password"
-					placeholder="Enter Password" name="password" required="required"
+					placeholder="Enter Password" name="password" required="true"
 					type="password" maxlength="30" class="form-control" />
 			</div>
 
 			<div class="form-group">
 				<label>Confirm Password</label> <input id="cpassword"
 					placeholder="Confirm your Password" name="cpassword"
-					required="required" type="password" maxlength="30"
+					required type="password" maxlength="30"
 					class="form-control" />
 			</div>
+			
+			<input type="hidden" name="${_csrf.parameterName}"
+				value="${_csrf.token}" />
 
 			<button id="register" type="submit" class="btn btn-primary">
 				Register</button>
@@ -43,7 +45,7 @@
 
 		<script src="/resources/js/utilities.js"></script>
 		<script src="/resources/js/bootstrap.min.js"></script>
-		
+
 		<script>
 		$(document).ready(function () {
 			   $("#cpassword").on('keyup', function(){
@@ -56,12 +58,12 @@
 			    	button.prop('disabled', true);
 			    }
 			    else{
-			        $("#error").html("Password match !").css("color","green");
+			        $("#error").html("Password match!").css("color","green");
 			        button.prop('disabled', false);} 
 			   });
 			});
 		</script>
-		
+
 
 	</div>
 </body>

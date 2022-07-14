@@ -4,9 +4,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Status</title>
-<link href="webjars/bootstrap/4.0.0/css/bootstrap.min.css"
-	rel="stylesheet">
+<title>Book Status</title>
+<link href="../resources/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
 
@@ -14,14 +13,15 @@
 		<jsp:param name="title" value="Book Status" />
 	</jsp:include>
 
+	<div id="error" class="alert alert-error" align="center">
+		<c:if test="${empty books}">
+			<p>
+				<font color="red"> No data </font>
+			</p>
+		</c:if>
+	</div>
+
 	<div class="container" align="center">
-		<div id="error" class="alert alert-error" align="center">
-			<c:if test="${empty books}">
-				<p>
-					<font color="red"> No data </font>
-				</p>
-			</c:if>
-		</div>
 
 		<table class="table table-striped">
 
@@ -33,14 +33,16 @@
 				</tr>
 			</thead>
 
-			<% int cont = 0; %>
+			<% int contB = 0; %>
+			<% int contR = 0; %>
+			<% int contL = 0; %>
 			<c:forEach items="${books}" var="book">
 				<tr>
-					<td>${book.id}</td>
-					<td>${renter.id}</td>
+					<td><label id="book_id<%out.print(++contB); %>">${book.id}</label></td>
+					<td><label id="renter_id<%out.print(++contR); %>">${renter.id}</label></td>
 
 					<td><a class="btn btn-danger"
-						href="renter-delete?id=${book.id}"> Delete_<%out.print(++cont); %>
+						href="renter-delete?id=${book.id}"> Delete_<%out.print(++contL); %>
 					</a></td>
 
 				</tr>

@@ -14,7 +14,9 @@ import com.rentbooks.services.RenterService;
 @Controller
 public class BookController {
 
-	private final String viewallbook = "viewallbook";
+	private static final String VIEW_ALL_BOOK = "viewallbook";
+	private static final String PARAM_BOOK = "books";
+	private static final String  PARAM_REDIRECT = "redirect:";
 	
 	@Autowired
 	private BookService service;
@@ -22,65 +24,71 @@ public class BookController {
 	@Autowired
 	private RenterService renterService;
 
-	@RequestMapping(value = "/viewallbook", method = RequestMethod.GET)
+	@RequestMapping(value = "/admin/viewallbook", method = RequestMethod.GET)
 	public String showViewAllBook(ModelMap model) {
-		model.addAttribute("books",service.retrieveBooks());
-		return viewallbook;
+		model.addAttribute(PARAM_BOOK,service.retrieveBooks());
+		return VIEW_ALL_BOOK;
 	}
 
-	@RequestMapping(value = "/addbook", method = RequestMethod.GET)
+	@RequestMapping(value = "/admin/addbook", method = RequestMethod.GET)
 	public String showAddBook(ModelMap model) {
 		model.addAttribute("book", new Book());
 		return "addbook";
 	}
 
-	@RequestMapping(value = "/addbook", method = RequestMethod.POST)
+	@RequestMapping(value = "/admin/addbook", method = RequestMethod.POST)
 	public String addBook(ModelMap model, Book book) {
-		service.addBook(book.getName(), book.getPrice(), 'Y');
+		BookService.addBook(book.getName(), book.getPrice(), 'Y');
 		model.clear();
-		return "redirect:" + viewallbook;
+		return PARAM_REDIRECT + VIEW_ALL_BOOK;
 	}
 
 
-	@RequestMapping(value = "/delete-book", method = RequestMethod.GET)
+	@RequestMapping(value = "/admin/delete-book", method = RequestMethod.GET)
 	public String deleteBook(ModelMap model, @RequestParam int id) {
 		service.deleteBook(id);
 		model.clear();
-		return "redirect:" + viewallbook;
+		return PARAM_REDIRECT + VIEW_ALL_BOOK;
 	}
 
-	@RequestMapping(value = "/update-book", method = RequestMethod.GET)
+	@RequestMapping(value = "/admin/update-book", method = RequestMethod.GET)
 	public String showUpdateBook(ModelMap model, @RequestParam int id) {
 		model.addAttribute("book", service.retrieveBook(id));
 		return "update";
 	}
 
-	@RequestMapping(value = "/update-book", method = RequestMethod.POST)
+	@RequestMapping(value = "/admin/update-book", method = RequestMethod.POST)
 	public String updateBook(ModelMap model, Book book) {
 		service.updateBook(book);
 		model.clear();
-		return "redirect:" + viewallbook;
+		return PARAM_REDIRECT + VIEW_ALL_BOOK;
 	}
 
-	@RequestMapping(value = "/status", method = RequestMethod.GET)
+	@RequestMapping(value = "/Renter/status", method = RequestMethod.GET)
 	public String renterBook(ModelMap model) {
-		model.addAttribute("books", service.retrieveStatusBooks());
+		model.addAttribute(PARAM_BOOK, service.retrieveStatusBooks());
 		model.addAttribute("renter", renterService.retrieverUser());
 		return "status";
 	}
 
-	@RequestMapping(value = "/renter-book", method = RequestMethod.GET)
+	@RequestMapping(value = "/Renter/renter-book", method = RequestMethod.GET)
 	public String showStatusBook(ModelMap model, @RequestParam int id) {
-		model.addAttribute("books", service.requestBook(id));
+		model.addAttribute(PARAM_BOOK, service.requestBook(id));
 		model.addAttribute("renter", renterService.retrieverUser());
 		return "status";
 	}
 
-	@RequestMapping(value = "/renter-delete", method = RequestMethod.GET)
+	@RequestMapping(value = "/Renter/renter-delete", method = RequestMethod.GET)
 	public String deleteRent(ModelMap model, @RequestParam int id) {
 		service.deleteRent(id);
 		model.clear();
-		return "redirect:"+ viewallbook;
+		return PARAM_REDIRECT + VIEW_ALL_BOOK;
+	}
+	
+	@RequestMapping(value = "/Renter/viewallbook", method = RequestMethod.GET)
+	public String showViewAllBookRenter(ModelMap model) {
+		model.addAttribute(PARAM_BOOK,service.retrieveBooks());
+		return VIEW_ALL_BOOK;
 	}
 
 }

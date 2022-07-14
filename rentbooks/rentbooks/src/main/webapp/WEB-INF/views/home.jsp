@@ -8,26 +8,26 @@
 </sec:authorize>
 
 <sec:authorize access="hasRole('USER')">
-	<title>Renter Home</title>
+	<title>Home</title>
 </sec:authorize>
-
-<link href="webjars/bootstrap/4.0.0/css/bootstrap.min.css"
-	rel="stylesheet">
+<link href="../resources/css/bootstrap.min.css" rel="stylesheet">
 </head>
+
 <body>
+	
+	<div id="error" class="alert alert-error" align="center"></div>
+	
 	<sec:authorize access="hasRole('ADMIN')">
 		<jsp:include page="menu.jsp">
-			<jsp:param name="title" value="Owner Home" />
+			<jsp:param name="title" value="Book Owner Home" />
 		</jsp:include>
 	</sec:authorize>
 
 	<sec:authorize access="hasRole('USER')">
 		<jsp:include page="menu.jsp">
-			<jsp:param name="title" value="Renter Home" />
+			<jsp:param name="title" value="Rent's Home" />
 		</jsp:include>
 	</sec:authorize>
 
-	<script src="/js/jquery-3.5.1.min.js"></script>
-	<script src="/js/bootstrap.min.js"></script>
 </body>
 </html>

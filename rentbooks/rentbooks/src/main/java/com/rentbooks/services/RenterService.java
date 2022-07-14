@@ -11,22 +11,26 @@ import com.rentbooks.security.AuthenticatedUser;
 
 @Service
 public class RenterService {
-	
+
 	private static List<Renter> renters = new ArrayList<>();
 	private static int renterCount = 10000;
 	private static AuthenticatedUser user = new AuthenticatedUser();
-	
+
 	private Renter userRent = new Renter();
-	
-	
+
 	public Renter getUserRent() {
 		return userRent;
 	}
+	
+	public static int getRenterCount() {
+		++renterCount;
+		return renterCount;
+	}
 
 	static {
-		renters.add(new Renter(++renterCount, "rodrigo", "123"));
+		renters.add(new Renter(getRenterCount(), "rodrigo1", "123"));
 	}
-	
+
 	public List<Renter> retrieveRenters(){
 		List<Renter> filteredRenters = new ArrayList<>();
 		for (Renter renter: renters) {
@@ -34,21 +38,11 @@ public class RenterService {
 		}
 		return filteredRenters;
 	}
-	
-	public boolean existRenter(String name) {
-		for (Renter renter: renters) {
-			if(renter.getName().equals(name)) {
-				return true;
-			}
-		}
-		return false;
-	}
-	
+
 	public void addRenter(String name, String password) {
-		if(!existRenter(name))
-			renters.add(new Renter(++renterCount,name, password));
+		renters.add(new Renter(getRenterCount(),name, password));
 	}
-	
+
 	public void deleteRenter(int id) {
 		Iterator<Renter> iterator = renters.iterator();
 		while(iterator.hasNext()) {
@@ -58,7 +52,6 @@ public class RenterService {
 		}
 	}
 
-	
 	public Renter retrieveRenter(String userName) {
 		for (Renter renter: renters) {
 			if(renter.getName().equals(userName)) {
@@ -68,7 +61,7 @@ public class RenterService {
 		}
 		return null;
 	}
-	
+
 	public void updateRenter(Renter renter) {
 		for(Renter eachRenter:renters) {
 			if(eachRenter.getId() == renter.getId()) {
@@ -77,7 +70,7 @@ public class RenterService {
 			}
 		}
 	}
-	
+
 	public Renter retrieverUser() {
 		return retrieveRenter(user.retriveLoggedinUserName());
 	}

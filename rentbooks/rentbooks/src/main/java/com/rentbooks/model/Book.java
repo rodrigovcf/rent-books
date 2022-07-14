@@ -55,7 +55,7 @@ public class Book implements Serializable{
 	}
 	@Override
 	public int hashCode() {
-		return Objects.hash(id);
+		return Objects.hash(available, id, name, price);
 	}
 	@Override
 	public boolean equals(Object obj) {
@@ -66,7 +66,9 @@ public class Book implements Serializable{
 		if (getClass() != obj.getClass())
 			return false;
 		Book other = (Book) obj;
-		return id == other.id;
+		return available == other.available && id == other.id && Objects.equals(name, other.name)
+				&& price == other.price;
 	}
+	
 	
 }

@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -80,4 +81,23 @@ public class Renter implements Serializable, UserDetails{
 		return true;
 	}
 
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, name, password, roles);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Renter other = (Renter) obj;
+		return id == other.id && Objects.equals(name, other.name) && Objects.equals(password, other.password)
+				&& Objects.equals(roles, other.roles);
+	}
+	
+	
 }

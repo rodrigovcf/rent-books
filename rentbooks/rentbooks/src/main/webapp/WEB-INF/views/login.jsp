@@ -5,8 +5,8 @@
 <html>
 <head>
 <title>Login</title>
-<link rel="stylesheet" type="text/css"
-	href="webjars/bootstrap/4.0.0/css/bootstrap.min.css">
+<link href="resources/css/bootstrap.min.css"
+	rel="stylesheet">
 
 </head>
 <body>
@@ -16,6 +16,7 @@
 		<c:if test="${param.error != null}">
 			<font color="red"> Invalid Details </font>
 		</c:if>
+		
 		<c:if test="${param.logout != null}">
 			<font color="red"> You have been logged out. </font>
 		</c:if>
@@ -27,12 +28,12 @@
 		<form action="${loginUrl}" method="POST">
 			<div class="form-group">
 				<label for="name">User Name</label> <input id="name"
-					placeholder="Enter Username" name="name" required="required"
+					placeholder="Enter Username" name="name" required
 					type="text" maxlength="30" class="form-control" />
 			</div>
 			<div class="form-group">
 				<label for="password">Password</label> <input id="password"
-					placeholder="Enter Password" name="password" required="required"
+					placeholder="Enter Password" name="password" required
 					type="password" maxlength="30" class="form-control" />
 			</div>
 

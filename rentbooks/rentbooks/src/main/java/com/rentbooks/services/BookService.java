@@ -36,7 +36,7 @@ public class BookService {
 		return availableBooks;
 	}
 
-	public void addBook(String name, int price, char available) {
+	public static void addBook(String name, int price, char available) {
 		books.add(new Book(++bookCount, name, price, available));
 	}
 

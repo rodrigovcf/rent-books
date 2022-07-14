@@ -4,24 +4,31 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>View all book</title>
-<link href="webjars/bootstrap/4.0.0/css/bootstrap.min.css"
-	rel="stylesheet">
-</head>
-<body>
+<sec:authorize access="hasRole('ADMIN')">
 	<jsp:include page="menu.jsp">
 		<jsp:param name="title" value="View all book" />
 	</jsp:include>
+</sec:authorize>
+
+<sec:authorize access="hasRole('USER')">
+	<jsp:include page="menu.jsp">
+		<jsp:param name="title" value="View all book" />
+	</jsp:include>
+</sec:authorize>
+<link href="../resources/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+
+	<div id="error" class="alert alert-error" align="center">
+		<c:if test="${empty books}">
+			<p>
+				<font color="red">No book</font>
+			</p>
+		</c:if>
+	</div>
 
 	<div class="container" align="center">
-
-		<div id="error" class="alert alert-error" align="center">
-			<c:if test="${empty books}">
-				<p>
-					<font color="red"> No data </font>
-				</p>
-			</c:if>
-		</div>
 
 		<table class="table table-striped">
 			<thead>
@@ -37,14 +44,21 @@
 			</thead>
 
 			<tbody>
-				<% int contU = 0, contD = 0, contAvailables = 0; %>
+				<%
+				int contU = 0, contD = 0, cont = 0;
+				%>
 				<c:forEach items="${books}" var="book">
 					<tr>
 						<sec:authorize access="hasRole('ADMIN')">
-							<td>${book.id}</td>
-							<td>${book.name}</td>
-							<td>${book.price}</td>
-							<td>${book.available}</td>
+							<%
+							++cont;
+							%>
+							<td><input type="text" id="bookid_<%out.print(cont);%>"
+								name="bookid_<%out.print(cont);%>" value="${book.id}"
+								required="required" /></td>
+							<td><label id="name_<%out.print(cont);%>">${book.name}</label></td>
+							<td><label id="price_<%out.print(cont);%>">${book.price}</label></td>
+							<td><label id="avail_<%out.print(cont);%>">${book.available}</label></td>
 
 							<td><a class="btn btn-primary"
 								href="update-book?id=${book.id}">Update<%out.print(++contU);%></a>
@@ -53,12 +67,14 @@
 						</sec:authorize>
 						<sec:authorize access="hasRole('USER')">
 							<c:if test="${book.available eq 'Y'.charAt(0)}">
-								<td>${book.id}</td>
-								<td>${book.name}</td>
-								<td>${book.price}</td>
+								<%
+								++cont;
+								%>
+								<td><label id="book_id<%out.print(cont);%>">${book.id}</label></td>
+								<td><label id="book_name<%out.print(cont);%>">${book.name}</label></td>
+								<td><label id="book_price<%out.print(cont);%>">${book.price}</label></td>
 								<td><a class="btn btn-primary"
-									href="renter-book?id=${book.id}">Rent_<%out.print(++contAvailables);%></a>
-								</td>
+									href="renter-book?id=${book.id}">Rent_<%out.print(cont);%></a></td>
 							</c:if>
 						</sec:authorize>
 					</tr>
@@ -67,9 +83,6 @@
 		</table>
 
 	</div>
-
-	<script src="webjars/jquery/1.9.1/jquery.min.js"></script>
-	<script src="webjars/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 
 </body>
 </html>
