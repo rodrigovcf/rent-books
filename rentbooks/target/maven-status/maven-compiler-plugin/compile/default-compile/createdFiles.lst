@@ -1,0 +1,15 @@
+com\rentbooks\controllers\BookController.class
+com\rentbooks\security\SecurityConfiguration$1.class
+com\rentbooks\security\AuthenticatedUser.class
+com\rentbooks\security\ImplementsUserDetailsService.class
+com\rentbooks\security\SecurityConfiguration.class
+com\rentbooks\services\BookService.class
+com\rentbooks\model\Renter.class
+com\rentbooks\services\RenterService.class
+com\rentbooks\controllers\RenterController.class
+com\rentbooks\model\RentedBooks.class
+com\rentbooks\controllers\LogoutController.class
+com\rentbooks\controllers\HomeController.class
+com\rentbooks\model\Role.class
+com\rentbooks\controllers\LoginController.class
+com\rentbooks\model\Book.class
